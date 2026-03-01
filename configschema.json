@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "definitions": {
+    "audio": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "obs": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "default": true
+        },
+        "address": {
+          "type": "string",
+          "default": "localhost:4444"
+        },
+        "password": {
+          "type": "string",
+          "default": "ILOVEDARKSOULS2"
+        },
+        "names": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "scenes": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "intermission": {
+                  "type": "string",
+                  "default": "Intermission"
+                }
+              },
+              "required": [
+                "intermission"
+              ]
+            },
+            "audioToMute": {
+              "$ref": "#/definitions/audio"
+            },
+            "audioToUnmute": {
+              "$ref": "#/definitions/audio"
+            }
+          },
+          "required": [
+            "scenes",
+            "audioToMute",
+            "audioToUnmute"
+          ]
+        }
+      },
+      "required": [
+        "enable",
+        "address",
+        "names"
+      ]
+    }
+  },
+  "required": [
+    "obs"
+  ]
+}

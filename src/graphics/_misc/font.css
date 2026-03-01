@@ -1,0 +1,17 @@
+@font-face {
+	font-family: 'Franchise Free';
+	src: url('FranchiseFree-Bold.woff2') format('woff2'),
+		url('FranchiseFree-Bold.woff') format('woff');
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Segoe UI Emoji';
+	src: url('SegoeUIEmoji.woff2') format('woff2'),
+		url('SegoeUIEmoji.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
