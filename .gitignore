@@ -61,12 +61,12 @@ typings/
 .next
 
 # NodeCG bundles
-/bundles/
+nodecg/bundles/
 
 # Built files
-/dashboard/
-/extension/
-/graphics/
+nodecg/dashboard/
+nodecg/extension/
+nodecg/graphics/
 
 # SQLite Database files
 *.sqlite3

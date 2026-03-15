@@ -1,9 +1,5 @@
 .eslintrc.*.js
 webpack.config.mjs
-vetur.config.js
-dashboard/**/*
-extension/**/*
-graphics/**/*
+nodecg/**/*
 node_modules/**/*
-schemas/**/*
 src/types/schemas/**/*

@@ -70,7 +70,7 @@ const config = (name) => {
     // devtool: isProd ? undefined : 'cheap-source-map',
     entry,
     output: {
-      path: path.resolve(__dirname, name),
+      path: path.resolve(__dirname, 'nodecg', name),
       filename: 'js/[name].js',
     },
     resolve: {

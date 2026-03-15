@@ -12,13 +12,13 @@
     "build": "run-s build:*",
     "build:browser": "cross-env NODE_ENV=production webpack",
     "build:extension": "tsc -b tsconfig.extension.json",
-    "clean": "trash node_modules/.cache && trash dashboard && trash graphics && trash extension",
+    "clean": "trash node_modules/.cache && trash nodecg/dashboard && trash nodecg/graphics && trash nodecg/extension",
     "format": "prettier --write ./src",
     "schema-types": "nodecg schema-types",
     "watch": "run-p watch:*",
     "watch:browser": "webpack -w",
     "watch:extension": "tsc -b tsconfig.extension.json -w",
-    "start": "nodecg start"
+    "start": "cd nodecg && npm run start"
   },
   "dependencies": {
     "@types/bluebird": "^3.5.37",
@@ -32,7 +32,6 @@
     "module-alias": "^2.2.2",
     "needle": "^3.0.0",
     "node-fetch": "^2.7.0",
-    "nodecg": "^2.5.3",
     "numeral": "^2.0.6",
     "obs-websocket-js": "^5.0.3",
     "reconnecting-websocket": "^4.4.0",
@@ -94,91 +93,5 @@
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
     "webpack-livereload-plugin": "^3.0.2"
-  },
-  "nodecg": {
-    "compatibleRange": "",
-    "bundleDependencies": {
-      "nodecg-speedcontrol": ""
-    },
-    "dashboardPanels": [
-      {
-        "name": "obs",
-        "title": "OBS Panel",
-        "file": "obs.html",
-        "workspace": "SCM",
-        "width": 3
-      },
-      {
-        "name": "host",
-        "title": "Host",
-        "file": "host.html",
-        "workspace": "SCM",
-        "width": 2
-      }
-    ],
-    "graphics": [
-      {
-        "file": "intermission.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "4x3-1p.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "4x3-2p.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "3x2-1p.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "16x9-1p.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "16x9-2p.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "16x9-2p-bingo.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "16x9-3p.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "16x9-4p.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "16x9-4p-bingo.html",
-        "width": 1920,
-        "height": 1080
-      }
-    ],
-    "assetCategories": [
-      {
-        "name": "sponsor-logos",
-        "title": "Sponsor Logos",
-        "allowedTypes": [
-          "jpg",
-          "jpeg",
-          "png",
-          "svg"
-        ]
-      }
-    ]
   }
 }
