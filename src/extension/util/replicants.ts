@@ -5,7 +5,7 @@ import type {
 	Host,
 	Prizes,
 } from '@src/types/schemas';
-import { get as nodecg } from './nodecg';
+import { getNodeCG as nodecg } from './nodecg';
 
 /**
  * This is where you can declare all your replicant to import easily into other files,

@@ -1,12 +1,6 @@
 {
     "name": "scm-nodecg-bundle",
     "version": "1.0.0",
-    "scripts": {
-        "start": "nodecg start"
-    },
-    "dependencies": {
-        "nodecg": "^2.5.3"
-    },
     "nodecg": {
         "compatibleRange": "",
         "bundleDependencies": {

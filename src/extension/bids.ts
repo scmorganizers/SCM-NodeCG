@@ -1,5 +1,5 @@
 import type { Bids } from '@src/types/schemas';
-import { get as nodecg } from './util/nodecg';
+import { getNodeCG as nodecg } from './util/nodecg';
 import type { Configschema } from '@src/types/schemas/configschema';
 import deepEqual from 'deep-equal';
 import numeral from 'numeral';

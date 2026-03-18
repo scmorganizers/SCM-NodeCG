@@ -8,16 +8,16 @@ require('module-alias').addAlias(
 	require('path').join(__dirname, '.')
 );
 
-import type { NodeCG } from '@src/types/nodecg/server';
-import { set } from './util/nodecg';
+import type NodeCG from 'nodecg/types';
+import { setNodeCG } from './util/nodecg';
 
 // TODO: Validate this
-export = (nodecg: NodeCG): void => {
+export = (nodecg: NodeCG.ServerAPI): void => {
 	/**
 	 * Because of how `import`s work, it helps to use `require`s to force
 	 * things to be loaded *after* the NodeCG context is set.
 	 */
-	set(nodecg);
+	setNodeCG(nodecg);
 	require('./util/obs'); // Make sure OBS connection is setup.
 	require('./tracker');
 	require('./layouts');

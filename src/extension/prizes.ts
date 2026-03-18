@@ -1,10 +1,10 @@
 import needle from 'needle';
 import { prizesReplicant } from './util/replicants';
-import { get as nodecg } from './util/nodecg';
-import type { Configschema } from '@src/types/schemas/configschema';
+import { getNodeCG } from './util/nodecg';
 import { Tracker } from '@src/types';
 
 const refreshTime = 60 * 1000; // Refresh prizes every 60s.
+const nodecg = getNodeCG();
 
 function processRawPrizes(
 	rawPrizes: Tracker.Prize[]
@@ -36,8 +36,9 @@ export async function updatePrizes(): Promise<void> {
 		const currentPrizes = processRawPrizes(resp.body);
 		prizesReplicant.value = currentPrizes;
 	} catch (err) {
-		nodecg().log.warn('Error getting prizes:', err);
-		prizesReplicant.value.length = 0; // Remove the data just in case
+		nodecg.log.warn('Error getting prizes:', err);
+		// TODO: Invalid?
+		//prizesReplicant.value.length = 0; // Remove the data just in case
 	}
 	setTimeout(updatePrizes, refreshTime);
 }

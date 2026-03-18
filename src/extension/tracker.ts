@@ -1,10 +1,10 @@
 import needle from 'needle';
 import ws from 'websocket';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import { get } from './util/nodecg';
+import { getNodeCG } from './util/nodecg';
 import { donationTotal } from './util/replicants';
 
-const nodecg = get();
+const nodecg = getNodeCG();
 const statsURL = 'https://donate.soulsspeedruns.com/event/2?json';
 
 // Get donation total from HTTPS API, backup for the repeater socket server.
