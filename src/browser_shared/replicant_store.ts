@@ -10,7 +10,15 @@ import { RunDataActiveRun, RunDataArray } from '@bundles/nodecg-speedcontrol/src
 import { RunDataActiveRunSurrounding, Timer } from '@bundles/nodecg-speedcontrol/src/types/schemas';
 import { getNodeCG } from '@src/extension/util/nodecg';
 
+import { NodeCGAPIClient } from 'nodecg/out/client/api/api.client';
+import { Configschema } from '@src/types/schemas';
+
 const nodecg = getNodeCG();
+
+declare global {
+	let nodecgApiClient: typeof NodeCGAPIClient<Configschema>;
+	let nodecg: typeof NodeCG;
+}
 
 // Declaring replicants.
 export const reps: {
@@ -77,7 +85,7 @@ export async function setUpReplicants(store: Store<unknown>): Promise<void> {
 		});
 	});
 	// We should make sure the replicant are ready to be read, needs to be done in browser context.
-	// TODO: This seems to match documentation, but cannot call NodeCG since it is a type???
-	// await NodeCG.waitForReplicants(...Object.keys(reps).map((key) => reps[key]));
+	// @ts-ignore
+	await nodecgApiClient.waitForReplicants(...Object.keys(reps).map((key) => reps[key]));
 	replicantModule = getModule(ReplicantModule, store);
 }

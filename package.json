@@ -5,6 +5,7 @@
   "homepage": "https://github.com/scmorganizers/scm-nodecg#readme",
   "license": "MIT",
   "author": "StenniHub",
+  "private": true,
   "scripts": {
     "autofix": "run-s autofix:*",
     "autofix:browser": "eslint --fix --ext .ts,.vue src/dashboard && eslint --fix --ext .ts,.vue src/graphics && eslint --fix --ext .ts src/browser_shared",
@@ -14,11 +15,12 @@
     "build:extension": "tsc -b tsconfig.extension.json",
     "clean": "trash node_modules/.cache && trash nodecg/dashboard && trash nodecg/graphics && trash nodecg/extension",
     "format": "prettier --write ./src",
-    "schema-types": "nodecg schema-types",
     "watch": "run-p watch:*",
     "watch:browser": "webpack -w",
     "watch:extension": "tsc -b tsconfig.extension.json -w",
-    "start": "cross-env NODECG_ROOT=$INIT_CWD/nodecg nodecg start"
+    "schema-types": "nodecg schema-types",
+    "start": "cd nodecg && npm run start",
+    "start-experimental": "cross-env NODECG_ROOT=$INIT_CWD/nodecg nodecg start"
   },
   "dependencies": {
     "@types/bluebird": "^3.5.37",
@@ -69,7 +71,7 @@
     "gsap": "^3.8.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.4.5",
-    "nodecg": "^2.5.3",
+    "nodecg": "2.5.3",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
     "sass": "~1.32",

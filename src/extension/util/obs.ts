@@ -4,7 +4,7 @@ import { getNodeCG } from './nodecg';
 import { currentOBSScene } from './replicants';
 
 const nodecg = getNodeCG();
-const config = (nodecg as any).obs;  // TODO: No obs?
+const config = nodecg.bundleConfig.obs as any;  // TODO: Actual type we can apply?
 
 // Extending the OBS library with some of our own functions.
 class OBSUtility extends obsWebsocketJs {
