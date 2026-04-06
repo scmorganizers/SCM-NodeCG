@@ -1,12 +1,11 @@
-// FIXME: Old typing, no longer valid. Get from nodecg dependency instead.
-import type { NodeCG } from '@src/types/nodecg/server';
+import type NodeCG from 'nodecg/types';
 
-var nodecg: NodeCG;
+var nodecg: NodeCG.ServerAPI;
 
-export function set(ctx: NodeCG): void {
+export function setNodeCG(ctx: NodeCG.ServerAPI): void {
 	nodecg = ctx;
 }
 
-export function get(): NodeCG {
+export function getNodeCG(): NodeCG.ServerAPI {
 	return nodecg;
 }

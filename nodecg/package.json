@@ -1,17 +1,14 @@
 {
-    "name": "scm-nodecg-bundle",
+    "name": "scm-nodecg",
     "version": "1.0.0",
     "scripts": {
-        "start": "nodecg start"
+        "start": "nodecg start",
+        "start-experimental": "node ../node_modules/nodecg/index.js"
     },
     "dependencies": {
-        "nodecg": "^2.5.3"
+        "nodecg": "2.5.3"
     },
     "nodecg": {
-        "compatibleRange": "",
-        "bundleDependencies": {
-            "nodecg-speedcontrol": ""
-        },
         "dashboardPanels": [
             {
                 "name": "obs",

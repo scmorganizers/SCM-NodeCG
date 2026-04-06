@@ -30,11 +30,10 @@
 	import { Vue, Component } from 'vue-property-decorator';
 	import { replicantNS } from '@src/browser_shared/replicant_store';
 	import { RunDataActiveRunSurrounding } from '@bundles/nodecg-speedcontrol/src/types/schemas';
-	import {
-		RunDataArray,
-		RunData,
-		Timer,
-	} from '@bundles/nodecg-speedcontrol/src/types';
+	import { RunDataArray, RunData, Timer } from '@bundles/nodecg-speedcontrol/src/types';
+	import { getNodeCG } from '@src/extension/util/nodecg';
+
+	const nodecg = getNodeCG();
 
 	@Component
 	export default class App extends Vue {
@@ -62,16 +61,7 @@
 		}
 
 		playNextRun(): void {
-			if (this.nextRun) {
-				nodecg
-					.sendMessage('nextRun')
-					.then(() => {
-						// run change successful
-					})
-					.catch(() => {
-						// run change unsuccessful
-					});
-			}
+			if (this.nextRun) nodecg.sendMessage('nextRun');
 		}
 
 		refreshing = false;

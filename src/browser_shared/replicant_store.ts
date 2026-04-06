@@ -1,45 +1,42 @@
 import { Asset } from '@src/types';
 import type { DonationTotal, Host } from '@src/types/schemas';
 import clone from 'clone';
-import type { ReplicantBrowser } from '@src/types/nodecg/browser';
+import type NodeCG from 'nodecg/types';
 import Vue from 'vue';
 import type { Store } from 'vuex';
 import { namespace } from 'vuex-class';
-import {
-	getModule,
-	Module,
-	Mutation,
-	VuexModule,
-} from 'vuex-module-decorators';
-import {
-	RunDataActiveRun,
-	RunDataArray,
-} from '@bundles/nodecg-speedcontrol/src/types';
-import {
-	RunDataActiveRunSurrounding,
-	Timer,
-} from '@bundles/nodecg-speedcontrol/src/types/schemas';
+import { getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
+import { RunDataActiveRun, RunDataArray } from '@bundles/nodecg-speedcontrol/src/types';
+import { RunDataActiveRunSurrounding, Timer } from '@bundles/nodecg-speedcontrol/src/types/schemas';
+import { getNodeCG } from '@src/extension/util/nodecg';
+
+import { NodeCGAPIClient } from 'nodecg/out/client/api/api.client';
+import { Configschema } from '@src/types/schemas';
+
+const nodecg = getNodeCG();
+
+declare global {
+	let nodecgApiClient: typeof NodeCGAPIClient<Configschema>;
+	let nodecg: typeof NodeCG;
+}
 
 // Declaring replicants.
 export const reps: {
-	assetsSponsorLogos: ReplicantBrowser<Asset[]>;
-	donationTotal: ReplicantBrowser<DonationTotal>;
-	host: ReplicantBrowser<Host>;
-	runDataActiveRun: ReplicantBrowser<RunDataActiveRun>;
-	runDataActiveRunSurrounding: ReplicantBrowser<RunDataActiveRunSurrounding>;
-	runDataArray: ReplicantBrowser<RunDataArray>;
-	timer: ReplicantBrowser<Timer>;
-	nameCycle: ReplicantBrowser<number>;
-	[k: string]: ReplicantBrowser<unknown>;
+	assetsSponsorLogos: NodeCG.ServerReplicant<Asset[]>;
+	donationTotal: NodeCG.ServerReplicant<DonationTotal>;
+	host: NodeCG.ServerReplicant<Host>;
+	runDataActiveRun: NodeCG.ServerReplicant<RunDataActiveRun>;
+	runDataActiveRunSurrounding: NodeCG.ServerReplicant<RunDataActiveRunSurrounding>;
+	runDataArray: NodeCG.ServerReplicant<RunDataArray>;
+	timer: NodeCG.ServerReplicant<Timer>;
+	nameCycle: NodeCG.ServerReplicant<number>;
+	[k: string]: NodeCG.ServerReplicant<unknown>;
 } = {
 	assetsSponsorLogos: nodecg.Replicant('assets:sponsor-logos'),
 	donationTotal: nodecg.Replicant('donationTotal'),
 	host: nodecg.Replicant('host'),
 	runDataActiveRun: nodecg.Replicant('runDataActiveRun', 'nodecg-speedcontrol'),
-	runDataActiveRunSurrounding: nodecg.Replicant(
-		'runDataActiveRunSurrounding',
-		'nodecg-speedcontrol'
-	), // eslint-disable-line max-len
+	runDataActiveRunSurrounding: nodecg.Replicant('runDataActiveRunSurrounding', 'nodecg-speedcontrol'),
 	runDataArray: nodecg.Replicant('runDataArray', 'nodecg-speedcontrol'),
 	timer: nodecg.Replicant('timer', 'nodecg-speedcontrol'),
 	nameCycle: nodecg.Replicant('nameCycle'),
@@ -88,6 +85,7 @@ export async function setUpReplicants(store: Store<unknown>): Promise<void> {
 		});
 	});
 	// We should make sure the replicant are ready to be read, needs to be done in browser context.
-	await NodeCG.waitForReplicants(...Object.keys(reps).map((key) => reps[key]));
+	// @ts-ignore
+	await nodecgApiClient.waitForReplicants(...Object.keys(reps).map((key) => reps[key]));
 	replicantModule = getModule(ReplicantModule, store);
 }

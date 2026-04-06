@@ -7,7 +7,7 @@ function cycleNames(reset = false): void {
 	clearTimeout(cycleTimeout);
 	let cycle = 0;
 	if (!reset) {
-		cycle = nameCycleReplicant.value + 1;
+		cycle = (nameCycleReplicant.value || 0) + 1;  // TODO: Is || 0 correct behavior?
 	}
 	if (cycle === 0) {
 		// Player 1

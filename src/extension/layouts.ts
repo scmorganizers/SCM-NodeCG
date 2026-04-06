@@ -1,13 +1,13 @@
 import { ExtensionReturn, Timer } from '@bundles/nodecg-speedcontrol/src/types';
-import { get } from './util/nodecg';
+import { getNodeCG } from './util/nodecg';
 import obs from './util/obs';
 
-const nodecg = get();
-const speedcontrol = nodecg.extension['nodecg-speedcontrol'] as unknown as ExtensionReturn;
+const nodecg = getNodeCG();
+const speedcontrol = nodecg.extensions['nodecg-speedcontrol'] as unknown as ExtensionReturn;
 const timer = nodecg.Replicant<Timer>('timer', 'nodecg-speedcontrol');
 
 timer.on('change', (newVal, oldVal) => {
-	if (oldVal && oldVal.state !== 'finished' && newVal.state === 'finished') {
+	if (oldVal?.state !== 'finished' && newVal?.state === 'finished') {
 		nodecg.sendMessage('refreshIntermission');
 	}
 });

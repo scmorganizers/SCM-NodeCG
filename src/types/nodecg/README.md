@@ -1,1 +1,0 @@
-Copied from NodeCG 1.9.0. Do we still need these?

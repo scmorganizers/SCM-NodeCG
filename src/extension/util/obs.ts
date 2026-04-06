@@ -1,10 +1,10 @@
 import { Configschema } from '@src/types/schemas';
 import obsWebsocketJs from 'obs-websocket-js';
-import { get } from './nodecg';
+import { getNodeCG } from './nodecg';
 import { currentOBSScene } from './replicants';
 
-const nodecg = get();
-const config = (nodecg.bundleConfig as Configschema).obs;
+const nodecg = getNodeCG();
+const config = nodecg.bundleConfig.obs as any;  // TODO: Actual type we can apply?
 
 // Extending the OBS library with some of our own functions.
 class OBSUtility extends obsWebsocketJs {
@@ -48,8 +48,9 @@ class OBSUtility extends obsWebsocketJs {
   /**
    * Mute all audio sources listed in the config.
    */
+  // TODO: What is the correct type for source?
   async muteAudio(): Promise<void> {
-    config.names.audioToMute.forEach((source) => {
+    config.names.audioToMute.forEach((source: any) => {
       this.toggleSourceAudio(source, true).catch(() => {});
     });
   }
@@ -58,7 +59,7 @@ class OBSUtility extends obsWebsocketJs {
    * Unmute all audio sources listed in the config.
    */
   async unmuteAudio(): Promise<void> {
-    config.names.audioToUnmute.forEach((source) => {
+    config.names.audioToUnmute.forEach((source: any) => {
       this.toggleSourceAudio(source, false).catch(() => {});
     });
   }

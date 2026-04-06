@@ -63,10 +63,10 @@
 	import Host from '../_misc/components/Host.vue';
 	import Ticker from '../_misc/components/Ticker.vue';
 	import { RunData } from '@bundles/nodecg-speedcontrol/src/types';
-	import {
-		RunDataActiveRunSurrounding,
-		RunDataArray,
-	} from '@bundles/nodecg-speedcontrol/src/types/schemas';
+	import { RunDataActiveRunSurrounding, RunDataArray } from '@bundles/nodecg-speedcontrol/src/types/schemas';
+	import { getNodeCG } from '@src/extension/util/nodecg';
+
+	const nodecg = getNodeCG();
 
 	@Component({
 		components: {
