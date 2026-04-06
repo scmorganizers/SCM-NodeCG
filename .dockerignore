@@ -1,0 +1,18 @@
+nodecg
+schemas
+.git
+.gitignore
+prettierc.yaml
+Dockerfile
+LICENSE
+README.md
+
+# Required for types/schemas during build
+!nodecg/bundles/nodecg-speedcontrol/src/types
+
+# Required for production image NodeCG installation
+!nodecg/package.json
+!nodecg/package-lock.json
+
+# Ignore node_modules at all levels (including bundles)
+**/node_modules
