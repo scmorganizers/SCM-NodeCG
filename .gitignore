@@ -60,10 +60,7 @@ typings/
 # next.js build output
 .next
 
-# NodeCG bundles
-nodecg/bundles/
-
-# Built files
+# Built files and NodeCG resources
 nodecg/*
 !nodecg/package.json
 !nodecg/package-lock.json
@@ -71,6 +68,3 @@ nodecg/*
 
 # SQLite Database files
 *.sqlite3
-
-# Files (potentially) containing sensitive data
-nodecg/cfg/
