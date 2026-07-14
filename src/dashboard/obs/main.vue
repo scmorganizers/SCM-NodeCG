@@ -31,9 +31,9 @@
 	import { replicantNS } from '@src/browser_shared/replicant_store';
 	import { RunDataActiveRunSurrounding } from '@bundles/nodecg-speedcontrol/src/types/schemas';
 	import { RunDataArray, RunData, Timer } from '@bundles/nodecg-speedcontrol/src/types';
-	import { getNodeCG } from '@src/extension/util/nodecg';
+	import type NodeCG from 'nodecg/types';
 
-	const nodecg = getNodeCG();
+	const nodecg: NodeCG.ServerAPI = (window as any).nodecg;
 
 	@Component
 	export default class App extends Vue {

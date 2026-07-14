@@ -64,9 +64,9 @@
 	import Ticker from '../_misc/components/Ticker.vue';
 	import { RunData } from '@bundles/nodecg-speedcontrol/src/types';
 	import { RunDataActiveRunSurrounding, RunDataArray } from '@bundles/nodecg-speedcontrol/src/types/schemas';
-	import { getNodeCG } from '@src/extension/util/nodecg';
+	import type NodeCG from 'nodecg/types';
 
-	const nodecg = getNodeCG();
+	const nodecg: NodeCG.ServerAPI = (window as any).nodecg;
 
 	@Component({
 		components: {

@@ -6,7 +6,7 @@
         "start-experimental": "node ../node_modules/nodecg/index.js"
     },
     "dependencies": {
-        "nodecg": "2.5.3"
+        "nodecg": "2.8.0"
     },
     "nodecg": {
         "dashboardPanels": [
