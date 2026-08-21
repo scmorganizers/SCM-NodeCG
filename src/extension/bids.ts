@@ -5,10 +5,11 @@ import deepEqual from 'deep-equal';
 import numeral from 'numeral';
 import requestPromise from 'request-promise';
 import Bluebird from 'bluebird';
+import { EVENT_ID, TRACKER_BASE_URL } from './util/constants';
 
 const POLL_INTERVAL = 20 * 1000;
-const BIDS_URL = `https://donate.soulsspeedruns.com/api/v2/bids/`;
-const CURRENT_BIDS_URL = `https://donate.soulsspeedruns.com/api/v2/bids/?state=OPENED`;
+const BIDS_URL = `${TRACKER_BASE_URL}/api/v2/events/${EVENT_ID}/bids/`;
+const CURRENT_BIDS_URL = `${TRACKER_BASE_URL}/api/v2/events/${EVENT_ID}/bids/?state=OPENED`;
 const currentBidsRep = nodecg().Replicant<Bids>('currentBids', {
 	defaultValue: [],
 });

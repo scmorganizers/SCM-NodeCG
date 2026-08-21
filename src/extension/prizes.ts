@@ -2,6 +2,7 @@ import needle from 'needle';
 import { prizesReplicant } from './util/replicants';
 import { getNodeCG } from './util/nodecg';
 import { Tracker } from '@src/types';
+import { EVENT_ID, TRACKER_BASE_URL } from './util/constants';
 
 const refreshTime = 60 * 1000; // Refresh prizes every 60s.
 const nodecg = getNodeCG();
@@ -31,7 +32,7 @@ export async function updatePrizes(): Promise<void> {
 	try {
 		const resp = await needle(
 			'get',
-			`https://donate.soulsspeedruns.com/api/v2/prizes/`
+			`${TRACKER_BASE_URL}/api/v2/events/${EVENT_ID}/prizes/`
 		);
 		const currentPrizes = processRawPrizes(resp.body);
 		prizesReplicant.value = currentPrizes;

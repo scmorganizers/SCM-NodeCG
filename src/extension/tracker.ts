@@ -3,6 +3,7 @@ import WS from 'ws';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { getNodeCG } from './util/nodecg';
 import { donationTotal } from './util/replicants';
+import { EVENT_ID, EVENT_SHORT, TRACKER_BASE_URL, TRACKER_WS_URL } from './util/constants';
 
 const nodecg = getNodeCG();
 
@@ -10,7 +11,7 @@ class CustomWS extends WS {
 	constructor(url: string | URL, protocols?: string | string[]) {
 		super(url, protocols, {
 			headers: {
-				Origin: 'https://donate.soulsspeedruns.com',
+				Origin: TRACKER_BASE_URL,
 			},
 		});
 	}
@@ -20,7 +21,7 @@ class CustomWS extends WS {
 async function updateDontationTotalFromAPI(): Promise<void> {
 	try {
 		let total = 0;
-		let url: string | null = 'https://donate.soulsspeedruns.com/api/v2/donations/?limit=500';
+		let url: string | null = `${TRACKER_BASE_URL}/api/v2/events/${EVENT_ID}/donations/?limit=500`;
 		while (url) {
 			const resp = await needle('get', url);
 			if (resp.statusCode !== 200) {
@@ -49,7 +50,7 @@ const options = {
 	maxRetries: 100,
 };
 
-const client = new ReconnectingWebSocket('wss://donate.soulsspeedruns.com/ws/donations/', [], options);
+const client = new ReconnectingWebSocket(TRACKER_WS_URL, [], options);
 
 client.onerror = function() {
 	nodecg.log.error('[tracker] WebSocket Client Connection Error');
@@ -71,6 +72,15 @@ client.onmessage = function(e) {
 		if (!evt || !evt.donation) {
 			return;
 		}
+
+		// Filter out donations that do not belong to the target event
+		if (evt.donation.event && evt.donation.event !== EVENT_ID && evt.donation.event !== EVENT_SHORT) {
+			return;
+		}
+		if (evt.event && evt.event !== EVENT_ID && evt.event !== EVENT_SHORT) {
+			return;
+		}
+
 		nodecg.log.info(`[tracker] Donation event received: [${evt.donation.id}] ${evt.donation.donor_name} - $${evt.donation.amount} (${evt.donation.readstate})`);
 
 		// Exit early in case we receive an event with dono that hasn't been completed
@@ -114,11 +124,13 @@ interface Dono {
 	transactionstate: string;
 	readstate: string;
 	commentstate: string;
+	event?: number | string;
 }
 
 interface DonoEvt {
 	donation: Dono;
 	event_total?: number;
+	event?: number | string;
 }
 
 // Getting the initial donation total on startup.
