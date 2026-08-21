@@ -65,8 +65,6 @@ When running in Docker you have to restart the container after rebuilding.
 The nodecg-speedcontrol.json file inside nodecg/cfg has Twitch integration enabled, but lacks clientId and clientSecret. Obtain these from the Twitch developer console (https://dev.twitch.tv/console).
 
 # OBS configuration
-Click scene collection > import on the toolbar at the top and import the included scene collection.
-
 Under tools > websocket server settings make sure the port is set to 4444 (same as cfg/scm-nodecg.json) and disable authorization.
 
 After launching nodecg with "npm run start" you should see websocket connection being successful.

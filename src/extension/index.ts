@@ -13,14 +13,14 @@ import { setNodeCG } from './util/nodecg';
 
 // TODO: Validate this
 export = (nodecg: NodeCG.ServerAPI): void => {
-	/**
-	 * Because of how `import`s work, it helps to use `require`s to force
-	 * things to be loaded *after* the NodeCG context is set.
-	 */
 	setNodeCG(nodecg);
-	require('./util/obs'); // Make sure OBS connection is setup.
-	require('./tracker');
-	require('./layouts');
-	require('./cycle');
-	require('./bids');
+
+	// Use `require`s to force things to be loaded *after* the NodeCG context is set and extensions are loaded
+	nodecg.on('extensionsLoaded', () => {
+		require('./util/obs');  // Make sure OBS connection is setup
+		require('./tracker');
+		require('./layouts');
+		require('./cycle');
+		require('./bids');
+	});
 };
