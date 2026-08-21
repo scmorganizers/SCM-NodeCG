@@ -2,28 +2,25 @@ export namespace Tracker {
 	interface EventInfo {
 		id: number;
 		short: string;
-		total: number;
+		name: string;
+		total?: number;
 	}
 
-	// The object from the tracker API.
+	// The object from the tracker V2 API.
 	interface Prize {
-		pk: number;
-		model: string;
-		fields: {
-			name: string;
-			description: string; // Can be empty
-			shortdescription: string; // Can be empty
-			provider: string; // Can be empty
-			minimumbid: string;
-			image: string; // Can be empty
-			startrun: number | null;
-			endrun: number | null;
-			startrun__starttime?: string;
-			endrun__endtime?: string;
-			starttime: string | null;
-			endtime: string | null;
-			state: string;
-		};
+		type?: string;
+		id: number;
+		name: string;
+		description: string; // Can be empty
+		shortdescription: string; // Can be empty
+		provider: string; // Can be empty
+		minimumbid: string | number;
+		image: string; // Can be empty
+		startrun: number | object | null;
+		endrun: number | object | null;
+		starttime: string | null;
+		endtime: string | null;
+		state: string;
 	}
 
 	interface FormattedPrize {
@@ -36,17 +33,40 @@ export namespace Tracker {
 		endTime?: number;
 	}
 
-	// The object from the tracker API.
+	// The object from the tracker V2 API.
+	interface Bid {
+		type?: string;
+		id: number;
+		bid_type?: string;
+		name: string;
+		full_name?: string;
+		event?: number;
+		speedrun?: number | object | null;
+		parent?: number | null;
+		state: string;
+		description: string;
+		shortdescription: string;
+		goal?: number | null;
+		total: number;
+		count?: number;
+		istarget?: boolean;
+		allowuseroptions?: boolean;
+	}
+
+	// The object from the tracker V2 API.
 	interface Donation {
-		pk: number;
-		model: string;
-		fields: {
-			donor__public: string;
-			amount: string;
-			comment: string; // Can be empty
-			commentstate: string;
-			timereceived: string;
-		};
+		type?: string;
+		id: number;
+		donor_name: string;
+		event?: number;
+		domain?: string;
+		transactionstate: string;
+		readstate: string;
+		commentstate: string;
+		amount: number;
+		currency?: string;
+		timereceived: string;
+		comment: string;
 	}
 
 	interface FormattedDonation {
@@ -62,13 +82,10 @@ export namespace Tracker {
 	}
 
 	interface DonationBid {
-		model: string;
-		pk: number;
-		fields: {
-			bid: number;
-			donation: number;
-			amount: string;
-			public: string;
-		};
+		id: number;
+		bid: number;
+		donation: number;
+		amount: number;
 	}
 }
+

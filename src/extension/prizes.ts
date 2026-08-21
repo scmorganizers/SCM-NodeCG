@@ -7,20 +7,20 @@ const refreshTime = 60 * 1000; // Refresh prizes every 60s.
 const nodecg = getNodeCG();
 
 function processRawPrizes(
-	rawPrizes: Tracker.Prize[]
+	rawPrizes: any
 ): Tracker.FormattedPrize[] {
-	return Array.from(rawPrizes)
-		.filter((prize) => prize.fields.state === 'ACCEPTED')
+	const prizes: any[] = Array.isArray(rawPrizes) ? rawPrizes : (rawPrizes?.results || []);
+	return prizes
+		.filter((prize) => (prize.state || '').toUpperCase() === 'ACCEPTED')
 		.map((prize) => {
-			const startTime =
-				prize.fields.startrun__starttime || prize.fields.starttime;
-			const endTime = prize.fields.endrun__endtime || prize.fields.endtime;
+			const startTime = typeof prize.startrun === 'object' && prize.startrun ? prize.startrun.starttime : prize.starttime;
+			const endTime = typeof prize.endrun === 'object' && prize.endrun ? prize.endrun.endtime : prize.endtime;
 			return {
-				id: prize.pk,
-				name: prize.fields.name,
-				provided: prize.fields.provider || undefined,
-				minimumBid: parseFloat(prize.fields.minimumbid),
-				image: prize.fields.image || undefined,
+				id: prize.id,
+				name: prize.name,
+				provided: prize.provider || undefined,
+				minimumBid: typeof prize.minimumbid === 'number' ? prize.minimumbid : parseFloat(prize.minimumbid || '0'),
+				image: prize.image || undefined,
 				startTime: startTime ? Date.parse(startTime) : undefined,
 				endTime: endTime ? Date.parse(endTime) : undefined,
 			};
@@ -31,7 +31,7 @@ export async function updatePrizes(): Promise<void> {
 	try {
 		const resp = await needle(
 			'get',
-			`https://donate.soulsspeedruns.coms/search/?event=2&type=prize`
+			`https://donate.soulsspeedruns.com/api/v2/prizes/`
 		);
 		const currentPrizes = processRawPrizes(resp.body);
 		prizesReplicant.value = currentPrizes;
@@ -42,3 +42,4 @@ export async function updatePrizes(): Promise<void> {
 	}
 	setTimeout(updatePrizes, refreshTime);
 }
+

@@ -7,8 +7,8 @@ import requestPromise from 'request-promise';
 import Bluebird from 'bluebird';
 
 const POLL_INTERVAL = 20 * 1000;
-const BIDS_URL = `https://donate.soulsspeedruns.com/search/?type=allbids&event=2&state=OPENED`;
-const CURRENT_BIDS_URL = `https://donate.soulsspeedruns.com/search/?type=allbids&event=2&state=OPENED`;
+const BIDS_URL = `https://donate.soulsspeedruns.com/api/v2/bids/`;
+const CURRENT_BIDS_URL = `https://donate.soulsspeedruns.com/api/v2/bids/?state=OPENED`;
 const currentBidsRep = nodecg().Replicant<Bids>('currentBids', {
 	defaultValue: [],
 });
@@ -63,54 +63,53 @@ function update() {
 		});
 }
 
-function processRawBids(bids: any[]) {
-	// The response from the tracker is flat. This is okay for donation incentives, but it requires
-	// us to do some extra work to figure out what the options are for donation wars that have multiple
-	// options.
+function processRawBids(rawResponse: any) {
+	const bids: any[] = Array.isArray(rawResponse) ? rawResponse : (rawResponse?.results || []);
 	const parentBidsById: any[] = [];
 	const childBids: any[] = [];
 	bids.sort(sortBidsByEarliestEndTime).forEach((bid: any) => {
+		const state = (bid.state || '').toLowerCase();
 		if (
-			bid.fields.state.toLowerCase() === 'denied' ||
-			bid.fields.state.toLowerCase() === 'pending'
+			state === 'denied' ||
+			state === 'pending'
 		) {
 			return;
 		}
 
 		// If this bid is an option for a donation war, add it to childBids array.
 		// Else, add it to the parentBidsById object.
-		if (bid.fields.parent) {
+		if (bid.parent) {
 			childBids.push(bid);
 		} else {
 			// Format the bid to clean up unneeded cruft.
 			const formattedParentBid: any = {
-				id: bid.pk,
-				name: bid.fields.name,
+				id: bid.id,
+				name: bid.name,
 				description:
-					bid.fields.shortdescription ||
-					`No shortdescription for bid #${bid.pk}`,
+					bid.shortdescription ||
+					`No shortdescription for bid #${bid.id}`,
 				longDescription:
-					bid.fields.description || `No description for bid #${bid.pk}`,
-				total: '$' + parseFloat(bid.fields.total.toString()),
-				rawTotal: parseFloat(bid.fields.total.toString()),
-				state: bid.fields.state,
-				game: bid.fields.speedrun__name,
-				category: bid.fields.speedrun__category,
-				runStartTime: Date.parse(bid.fields.speedrun__starttime),
-				runEndTime: Date.parse(bid.fields.speedrun__endtime),
-				public: bid.fields.public,
-				allowUserOptions: bid.fields.allowuseroptions,
+					bid.description || `No description for bid #${bid.id}`,
+				total: '$' + parseFloat((bid.total || 0).toString()),
+				rawTotal: parseFloat((bid.total || 0).toString()),
+				state: bid.state,
+				game: bid.speedrun && typeof bid.speedrun === 'object' ? bid.speedrun.name : '',
+				category: bid.speedrun && typeof bid.speedrun === 'object' ? bid.speedrun.category : '',
+				runStartTime: bid.speedrun && typeof bid.speedrun === 'object' && bid.speedrun.starttime ? Date.parse(bid.speedrun.starttime) : 0,
+				runEndTime: bid.speedrun && typeof bid.speedrun === 'object' && bid.speedrun.endtime ? Date.parse(bid.speedrun.endtime) : 0,
+				public: true,
+				allowUserOptions: bid.allowuseroptions,
 			};
 
 			// If this parent bid is not a target, that means it is a donation war that has options.
 			// So, we should add an options property that is an empty array,
 			// which we will fill in the next step.
 			// Else, add the "goal" field to the formattedParentBid.
-			if (bid.fields.istarget === false) {
+			if (bid.istarget === false) {
 				formattedParentBid.options = [];
 			} else {
-				const goal = parseFloat(bid.fields.goal.toString());
-				formattedParentBid.goalMet = bid.fields.total >= bid.fields.goal;
+				const goal = bid.goal ? parseFloat(bid.goal.toString()) : 0;
+				formattedParentBid.goalMet = (bid.total || 0) >= goal;
 				if (formattedParentBid.isBitsChallenge) {
 					formattedParentBid.goal = numeral(goal * 100).format('0,0');
 					formattedParentBid.rawGoal = parseFloat((goal * 100).toString());
@@ -125,12 +124,12 @@ function processRawBids(bids: any[]) {
 						: 'OPENED';
 				} else {
 					formattedParentBid.goal =
-						'$' + parseFloat(bid.fields.goal.toString());
+						'$' + goal;
 					formattedParentBid.rawGoal = goal;
 				}
 			}
 
-			parentBidsById[bid.pk] = formattedParentBid;
+			parentBidsById[bid.id] = formattedParentBid;
 		}
 	});
 
@@ -138,24 +137,24 @@ function processRawBids(bids: any[]) {
 	// to assign them to their parents in the parentBidsById object.
 	childBids.forEach((bid) => {
 		const formattedChildBid = {
-			id: bid.pk,
-			parent: bid.fields.parent,
-			name: bid.fields.name,
-			description: bid.fields.shortdescription,
-			speedrun: bid.fields.speedrun,
-			total: '$' + parseFloat(bid.fields.total),
-			rawTotal: parseFloat(bid.fields.total),
+			id: bid.id,
+			parent: bid.parent,
+			name: bid.name,
+			description: bid.shortdescription,
+			speedrun: bid.speedrun,
+			total: '$' + parseFloat((bid.total || 0).toString()),
+			rawTotal: parseFloat((bid.total || 0).toString()),
 		};
 
-		const parent = parentBidsById[bid.fields.parent];
+		const parent = parentBidsById[bid.parent];
 		if (parent) {
-			parentBidsById[bid.fields.parent].options.push(formattedChildBid);
+			parentBidsById[bid.parent].options.push(formattedChildBid);
 		} else {
 			nodecg().log.error(
 				"Child bid #%d's parent (bid #%s) could not be found." +
 					' This child bid will be discarded!',
-				bid.pk,
-				bid.fields.parent
+				bid.id,
+				bid.parent
 			);
 		}
 	});
@@ -209,19 +208,12 @@ function processRawBids(bids: any[]) {
 }
 
 function sortBidsByEarliestEndTime(
-	a: { fields: { speedrun__endtime: string }; runEndTime: number },
-	b: { fields: { speedrun__endtime: string }; runEndTime: number }
+	a: any,
+	b: any
 ) {
-	// Raw format from tracker.
-	if (a.fields && b.fields) {
-		return (
-			Date.parse(a.fields.speedrun__endtime) -
-			Date.parse(b.fields.speedrun__endtime)
-		);
-	}
-
-	// Else, format from our own code.
-	return a.runEndTime - b.runEndTime;
+	const aTime = a.speedrun && typeof a.speedrun === 'object' && a.speedrun.endtime ? Date.parse(a.speedrun.endtime) : (a.runEndTime || 0);
+	const bTime = b.speedrun && typeof b.speedrun === 'object' && b.speedrun.endtime ? Date.parse(b.speedrun.endtime) : (b.runEndTime || 0);
+	return aTime - bTime;
 }
 
 nodecg().listenFor('updateBids', update);
