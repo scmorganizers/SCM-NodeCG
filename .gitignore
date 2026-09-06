@@ -62,9 +62,14 @@ typings/
 
 # Built files and NodeCG resources
 nodecg/*
+nodecg.zip
 !nodecg/package.json
 !nodecg/package-lock.json
 !nodecg/assets/scm-nodecg/sponsor-logos/.empty_directory
+!nodecg/start.bat
 
 # SQLite Database files
 *.sqlite3
+
+# Backup of files (e.g. bundles not currently in use)
+backup/*
