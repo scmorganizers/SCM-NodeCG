@@ -27,17 +27,21 @@ async function updateDontationTotalFromAPI(): Promise<void> {
 			if (resp.statusCode !== 200) {
 				throw new Error(JSON.stringify(resp.body));
 			}
+
 			const results = resp.body.results || [];
 			for (const dono of results) {
 				if (dono.transactionstate === 'COMPLETED') {
 					total += typeof dono.amount === 'string' ? parseFloat(dono.amount) : (dono.amount || 0);
 				}
 			}
+
 			url = resp.body.next || null;
 		}
+
 		if (donationTotal.value !== total) {
 			nodecg.log.info(`[tracker] API donation total changed: $${total.toFixed(2)}`);
 		}
+
 		donationTotal.value = total;
 	} catch (err) {
 		nodecg.log.info('[tracker] Issue getting API donation total:', err);
@@ -77,6 +81,7 @@ client.onmessage = function(e) {
 		if (evt.donation.event && evt.donation.event !== EVENT_ID && evt.donation.event !== EVENT_SHORT) {
 			return;
 		}
+
 		if (evt.event && evt.event !== EVENT_ID && evt.event !== EVENT_SHORT) {
 			return;
 		}
@@ -136,4 +141,3 @@ interface DonoEvt {
 // Getting the initial donation total on startup.
 updateDontationTotalFromAPI();
 setInterval(updateDontationTotalFromAPI, 60000); // Also do this every 60s as a socket fallback.
-

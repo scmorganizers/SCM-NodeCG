@@ -1,6 +1,5 @@
 import type { Bids } from '@src/types/schemas';
 import { getNodeCG as nodecg } from './util/nodecg';
-import type { Configschema } from '@src/types/schemas/configschema';
 import deepEqual from 'deep-equal';
 import numeral from 'numeral';
 import requestPromise from 'request-promise';
@@ -10,9 +9,8 @@ import { EVENT_ID, TRACKER_BASE_URL } from './util/constants';
 const POLL_INTERVAL = 20 * 1000;
 const BIDS_URL = `${TRACKER_BASE_URL}/api/v2/events/${EVENT_ID}/bids/`;
 const CURRENT_BIDS_URL = `${TRACKER_BASE_URL}/api/v2/events/${EVENT_ID}/bids/?state=OPENED`;
-const currentBidsRep = nodecg().Replicant<Bids>('currentBids', {
-	defaultValue: [],
-});
+const currentBidsRep = nodecg().Replicant<Bids>('currentBids', { defaultValue: [] });
+
 let updateTimeout: NodeJS.Timeout;
 
 // Get latest bid data every POLL_INTERVAL milliseconds
@@ -36,8 +34,7 @@ function update() {
 		json: true,
 	});
 
-	return Bluebird.all([currentPromise, allPromise])
-		.then(([currentBidsJSON, allBidsJSON]) => {
+	return Bluebird.all([currentPromise, allPromise]).then(([currentBidsJSON, allBidsJSON]) => {
 			const currentBids = processRawBids(currentBidsJSON);
 			const allBids = processRawBids(allBidsJSON);
 
@@ -47,18 +44,18 @@ function update() {
 				const bidAlreadyExistsInCurrentBids = currentBids.find(
 					(currentBid) => currentBid.id === bid.id
 				);
+
 				if (!bidAlreadyExistsInCurrentBids) {
 					currentBids.unshift(bid);
 				}
 			});
+
 			if (!deepEqual(currentBidsRep.value, currentBids)) {
 				currentBidsRep.value = currentBids;
 			}
-		})
-		.catch((err) => {
+		}).catch((err) => {
 			nodecg().log.error('Error updating bids:', err);
-		})
-		.finally(() => {
+		}).finally(() => {
 			nodecg().sendMessage('bids:updated');
 			updateTimeout = setTimeout(update, POLL_INTERVAL);
 		});
@@ -70,10 +67,7 @@ function processRawBids(rawResponse: any) {
 	const childBids: any[] = [];
 	bids.sort(sortBidsByEarliestEndTime).forEach((bid: any) => {
 		const state = (bid.state || '').toLowerCase();
-		if (
-			state === 'denied' ||
-			state === 'pending'
-		) {
+		if (state === 'denied' || state === 'pending') {
 			return;
 		}
 
@@ -81,56 +75,48 @@ function processRawBids(rawResponse: any) {
 		// Else, add it to the parentBidsById object.
 		if (bid.parent) {
 			childBids.push(bid);
+			return;
+		}
+
+		// Format the bid to clean up unneeded cruft.
+		const formattedParentBid: any = {
+			id: bid.id,
+			name: bid.name,
+			description: bid.shortdescription || `No shortdescription for bid #${bid.id}`,
+			longDescription: bid.description || `No description for bid #${bid.id}`,
+			total: '$' + parseFloat((bid.total || 0).toString()),
+			rawTotal: parseFloat((bid.total || 0).toString()),
+			state: bid.state,
+			game: bid.speedrun?.name ?? '',
+			category: bid.speedrun?.category ?? '',
+			runStartTime: Date.parse(bid.speedrun?.starttime) || 0,
+			runEndTime: Date.parse(bid.speedrun?.endtime) || 0,
+			public: true,
+			allowUserOptions: bid.allowuseroptions
+		};
+
+		parentBidsById[bid.id] = formattedParentBid;
+
+		// If this parent bid is not a target, that means it is a donation war that has options.
+		// So, we should add an options property that is an empty array, which we will fill in the next step.
+		// Else, add the "goal" field to the formattedParentBid.
+		if (bid.istarget === false) {
+			formattedParentBid.options = [];
+			return;
+		}
+
+		const goal = bid.goal ? parseFloat(bid.goal.toString()) : 0;
+		formattedParentBid.goalMet = (bid.total || 0) >= goal;
+		if (formattedParentBid.isBitsChallenge) {
+			formattedParentBid.goal = numeral(goal * 100).format('0,0');
+			formattedParentBid.rawGoal = parseFloat((goal * 100).toString());
+			formattedParentBid.rawTotal = formattedParentBid.rawGoal;
+			formattedParentBid.total = numeral(formattedParentBid.rawTotal).format('0,0');
+			formattedParentBid.goalMet = formattedParentBid.rawTotal >= formattedParentBid.rawGoal;
+			formattedParentBid.state = formattedParentBid.goalMet ? 'CLOSED' : 'OPENED';
 		} else {
-			// Format the bid to clean up unneeded cruft.
-			const formattedParentBid: any = {
-				id: bid.id,
-				name: bid.name,
-				description:
-					bid.shortdescription ||
-					`No shortdescription for bid #${bid.id}`,
-				longDescription:
-					bid.description || `No description for bid #${bid.id}`,
-				total: '$' + parseFloat((bid.total || 0).toString()),
-				rawTotal: parseFloat((bid.total || 0).toString()),
-				state: bid.state,
-				game: bid.speedrun && typeof bid.speedrun === 'object' ? bid.speedrun.name : '',
-				category: bid.speedrun && typeof bid.speedrun === 'object' ? bid.speedrun.category : '',
-				runStartTime: bid.speedrun && typeof bid.speedrun === 'object' && bid.speedrun.starttime ? Date.parse(bid.speedrun.starttime) : 0,
-				runEndTime: bid.speedrun && typeof bid.speedrun === 'object' && bid.speedrun.endtime ? Date.parse(bid.speedrun.endtime) : 0,
-				public: true,
-				allowUserOptions: bid.allowuseroptions,
-			};
-
-			// If this parent bid is not a target, that means it is a donation war that has options.
-			// So, we should add an options property that is an empty array,
-			// which we will fill in the next step.
-			// Else, add the "goal" field to the formattedParentBid.
-			if (bid.istarget === false) {
-				formattedParentBid.options = [];
-			} else {
-				const goal = bid.goal ? parseFloat(bid.goal.toString()) : 0;
-				formattedParentBid.goalMet = (bid.total || 0) >= goal;
-				if (formattedParentBid.isBitsChallenge) {
-					formattedParentBid.goal = numeral(goal * 100).format('0,0');
-					formattedParentBid.rawGoal = parseFloat((goal * 100).toString());
-					formattedParentBid.rawTotal = formattedParentBid.rawGoal;
-					formattedParentBid.total = numeral(
-						formattedParentBid.rawTotal
-					).format('0,0');
-					formattedParentBid.goalMet =
-						formattedParentBid.rawTotal >= formattedParentBid.rawGoal;
-					formattedParentBid.state = formattedParentBid.goalMet
-						? 'CLOSED'
-						: 'OPENED';
-				} else {
-					formattedParentBid.goal =
-						'$' + goal;
-					formattedParentBid.rawGoal = goal;
-				}
-			}
-
-			parentBidsById[bid.id] = formattedParentBid;
+			formattedParentBid.goal = '$' + goal;
+			formattedParentBid.rawGoal = goal;
 		}
 	});
 
@@ -148,16 +134,12 @@ function processRawBids(rawResponse: any) {
 		};
 
 		const parent = parentBidsById[bid.parent];
-		if (parent) {
-			parentBidsById[bid.parent].options.push(formattedChildBid);
-		} else {
-			nodecg().log.error(
-				"Child bid #%d's parent (bid #%s) could not be found." +
-					' This child bid will be discarded!',
-				bid.id,
-				bid.parent
-			);
+		if (!parent) {
+			nodecg().log.error("Child bid #%d's parent (bid #%s) could not be found. This child bid will be discarded!", bid.id, bid.parent);
+			return;
 		}
+
+		parent.options.push(formattedChildBid);
 	});
 
 	// Ah, but now we have to sort all these child bids by how much they have raised so far!
@@ -194,9 +176,11 @@ function processRawBids(rawResponse: any) {
 				if (aTotal > bTotal) {
 					return -1;
 				}
+
 				if (aTotal < bTotal) {
 					return 1;
 				}
+
 				// a must be equal to b
 				return 0;
 			}
@@ -208,12 +192,9 @@ function processRawBids(rawResponse: any) {
 	return bidsArray;
 }
 
-function sortBidsByEarliestEndTime(
-	a: any,
-	b: any
-) {
-	const aTime = a.speedrun && typeof a.speedrun === 'object' && a.speedrun.endtime ? Date.parse(a.speedrun.endtime) : (a.runEndTime || 0);
-	const bTime = b.speedrun && typeof b.speedrun === 'object' && b.speedrun.endtime ? Date.parse(b.speedrun.endtime) : (b.runEndTime || 0);
+function sortBidsByEarliestEndTime(a: any,b: any) {
+	const aTime = a.speedrun?.endtime ? Date.parse(a.speedrun.endtime) : (a.runEndTime || 0);
+	const bTime = b.speedrun?.endtime ? Date.parse(b.speedrun.endtime) : (b.runEndTime || 0);
 	return aTime - bTime;
 }
 
