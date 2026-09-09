@@ -1,3 +1,5 @@
+# FIXME: Not tested
+
 FROM node:22-bookworm AS builder
 WORKDIR /app
 
@@ -13,11 +15,6 @@ RUN rm -r /app/nodecg/bundles
 
 FROM node:22-bookworm
 WORKDIR /app
-
-# Install NodeCG (not compatible with alpine)
-COPY nodecg/package.json .
-COPY nodecg/package-lock.json .
-RUN npm install
 
 # Create symlinks for all mounted NodeCG folders
 RUN ( \
