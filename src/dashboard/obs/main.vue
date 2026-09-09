@@ -27,50 +27,50 @@
 </template>
 
 <script lang="ts">
-	import { Vue, Component } from 'vue-property-decorator';
-	import { replicantNS } from '@src/browser_shared/replicant_store';
-	import { RunDataActiveRunSurrounding } from '@bundles/nodecg-speedcontrol/src/types/schemas';
-	import { RunDataArray, RunData, Timer } from '@bundles/nodecg-speedcontrol/src/types';
-	import type NodeCG from 'nodecg/types';
+import { Vue, Component } from 'vue-property-decorator';
+import { replicantNS } from '@src/browser_shared/replicant_store';
+import { RunDataActiveRunSurrounding } from '@bundles/nodecg-speedcontrol/src/types/schemas';
+import { RunDataArray, RunData, Timer } from '@bundles/nodecg-speedcontrol/src/types';
+import type NodeCG from 'nodecg/types';
 
-	const nodecg: NodeCG.ServerAPI = (window as any).nodecg;
+const { nodecg } = (window as any);
 
-	@Component
-	export default class App extends Vue {
-		@replicantNS.State((s) => s.reps.runDataArray)
-		readonly runDataArray!: RunDataArray;
-		@replicantNS.State((s) => s.reps.runDataActiveRunSurrounding)
-		readonly runDataActiveRunSurrounding!: RunDataActiveRunSurrounding;
-		@replicantNS.State((s) => s.reps.timer) readonly timer!: Timer;
+@Component
+export default class App extends Vue {
+  @replicantNS.State((s) => s.reps.runDataArray)
+  readonly runDataArray!: RunDataArray;
+  @replicantNS.State((s) => s.reps.runDataActiveRunSurrounding)
+  readonly runDataActiveRunSurrounding!: RunDataActiveRunSurrounding;
+  @replicantNS.State((s) => s.reps.timer) readonly timer!: Timer;
 
-		get nextRun(): RunData | undefined {
-			return this.runDataArray.find(
-				(run) => run.id === this.runDataActiveRunSurrounding.next
-			);
-		}
-		get nextRunGameName(): string {
-			if (this.nextRun && this.nextRun.game) {
-				return `${this.nextRun.game.slice(0, 35)}${
-					this.nextRun.game.length > 35 ? '...' : ''
-				}`;
-			}
-			return '(The Run With No Name)';
-		}
-		get disableChange(): boolean {
-			return ['running', 'paused'].includes(this.timer.state);
-		}
+  get nextRun(): RunData | undefined {
+    return this.runDataArray.find(
+      (run) => run.id === this.runDataActiveRunSurrounding.next,
+    );
+  }
+  get nextRunGameName(): string {
+    if (this.nextRun && this.nextRun.game) {
+      return `${this.nextRun.game.slice(0, 35)}${
+        this.nextRun.game.length > 35 ? '...' : ''
+      }`;
+    }
+    return '(The Run With No Name)';
+  }
+  get disableChange(): boolean {
+    return ['running', 'paused'].includes(this.timer.state);
+  }
 
-		playNextRun(): void {
-			if (this.nextRun) nodecg.sendMessage('nextRun');
-		}
+  playNextRun(): void {
+    if (this.nextRun) nodecg.sendMessage('nextRun');
+  }
 
-		refreshing = false;
-		forceRefreshIntermission(): void {
-			this.refreshing = true;
-			nodecg.sendMessage('refreshIntermission');
-			setTimeout(() => {
-				this.refreshing = false;
-			}, 1000);
-		}
-	}
+  refreshing = false;
+  forceRefreshIntermission(): void {
+    this.refreshing = true;
+    nodecg.sendMessage('refreshIntermission');
+    setTimeout(() => {
+      this.refreshing = false;
+    }, 1000);
+  }
+}
 </script>

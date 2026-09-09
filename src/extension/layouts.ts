@@ -7,19 +7,19 @@ const speedcontrol = nodecg.extensions['nodecg-speedcontrol'] as unknown as Exte
 const timer = nodecg.Replicant<Timer>('timer', 'nodecg-speedcontrol');
 
 timer.on('change', (newVal, oldVal) => {
-	if (oldVal?.state !== 'finished' && newVal?.state === 'finished') {
-		nodecg.sendMessage('refreshIntermission');
-	}
+  if (oldVal?.state !== 'finished' && newVal?.state === 'finished') {
+    nodecg.sendMessage('refreshIntermission');
+  }
 });
 
 nodecg.listenFor('nextRun', (data, ack) => {
-	console.log('next run')
-	obs.changeToIntermission().catch((err) => {console.log(err);});
-	setTimeout(() => speedcontrol.sendMessage('changeToNextRun'), 500);
-	obs.muteAudio();
-	obs.unmuteAudio();
+  console.log('next run');
+  obs.changeToIntermission().catch((err) => { console.log(err); });
+  setTimeout(() => speedcontrol.sendMessage('changeToNextRun'), 500);
+  obs.muteAudio();
+  obs.unmuteAudio();
 
-	if (ack && !ack.handled) {
-		ack(null);
-	}
+  if (ack && !ack.handled) {
+    ack(null);
+  }
 });
