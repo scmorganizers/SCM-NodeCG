@@ -41,13 +41,14 @@ From the root of this repository (where this README is located) run the followin
 
 ```npm run build```
 
-Built files will now be located in the "nodecg" folder. Due to limitations with NodeCG we also have to install it in this folder. So navigate into the nodecg folder, and again run:
-
-```npm install```
-
-If you are a hackermans and want to save some space, you could alternatively symlink the node_modules folder from one level up. You are now ready to launch the NodeCG server with:
+Built files and the entrypoint will now be located in the "nodecg" folder. You are now ready to launch the NodeCG server with:
 
 ```npm run start```
+
+Alternatively, you can launch it directly from inside the "nodecg" folder using:
+
+```node index.js```
+
 
 ### Node Version Manager
 If you require a different version of Node.js for another project, or already have another version installed, we recommend you manage them through NVM.

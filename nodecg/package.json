@@ -2,11 +2,7 @@
     "name": "scm-nodecg",
     "version": "1.0.0",
     "scripts": {
-        "start": "nodecg start",
-        "start-experimental": "node ../node_modules/nodecg/index.js"
-    },
-    "dependencies": {
-        "nodecg": "2.8.0"
+        "start": "node index.js"
     },
     "nodecg": {
         "dashboardPanels": [
