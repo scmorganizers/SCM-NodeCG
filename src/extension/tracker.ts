@@ -70,73 +70,69 @@ client.onclose = function() {
 
 var last_donation_id = 0;
 
+// This matches the tracker's actual broadcast payload from
+// tracker.eventutil.post_donation_to_postbacks (flat, not nested under a
+// "donation" key). The tracker only ever broadcasts donations that are
+// already completed and already screened/read, so there is no
+// transactionstate/readstate field to check here — the message arriving
+// at all is the signal.
+interface Dono {
+	id: number;
+	event: number | string;
+	amount: number;
+	currency: string;
+	comment: string;
+	donor__visiblename?: string;
+	donor__visibility: string;
+	new_total: number;
+	domain: string;
+	bids: unknown[];
+}
+
 client.onmessage = function(e) {
 	try {
-		let evt: DonoEvt = JSON.parse(e.data.toString());
-		if (!evt || !evt.donation) {
+		const dono: Dono = JSON.parse(e.data.toString());
+		if (!dono || dono.id == null) {
 			return;
 		}
 
 		// Filter out donations that do not belong to the target event
-		if (evt.donation.event && evt.donation.event !== EVENT_ID && evt.donation.event !== EVENT_SHORT) {
+		if (dono.event !== EVENT_ID && dono.event !== EVENT_SHORT) {
 			return;
 		}
 
-		if (evt.event && evt.event !== EVENT_ID && evt.event !== EVENT_SHORT) {
-			return;
-		}
+		const displayName =
+			dono.donor__visibility === 'ANON' ? 'Anonymous' : (dono.donor__visiblename ?? 'Anonymous');
 
-		nodecg.log.info(`[tracker] Donation event received: [${evt.donation.id}] ${evt.donation.donor_name} - $${evt.donation.amount} (${evt.donation.readstate})`);
-
-		// Exit early in case we receive an event with dono that hasn't been completed
-		if (evt.donation.transactionstate !== "COMPLETED") {
-			return;
-		}
+		nodecg.log.info(
+			`[tracker] Donation event received: [${dono.id}] ${displayName} - $${dono.amount}`
+		);
 
 		// Check if we have latest donation
-		if (evt.donation.id > last_donation_id) {
-			last_donation_id = evt.donation.id;
+		if (dono.id > last_donation_id) {
+			last_donation_id = dono.id;
 			// If the latest donation has a new total, update the UI
-			if (evt.event_total && evt.event_total > 0) {
-				donationTotal.value = evt.event_total;
-				nodecg.log.info(
-					`[tracker] Updated donation total received: $${evt.event_total.toFixed(2)}`
-				);
+			if (dono.new_total > 0) {
+				donationTotal.value = dono.new_total;
+				nodecg.log.info(`[tracker] Updated donation total received: $${dono.new_total.toFixed(2)}`);
 			} else {
 				updateDontationTotalFromAPI();
 			}
 		}
 
-		// Show comment on the stream
-		if (evt.donation.readstate === "READ")  {
-			nodecg.sendMessage('newDonation', {
-				donor_name: evt.donation.donor_name,
-				amount: evt.donation.amount.toString(),
-				comment: evt.donation.comment,
-			});
-		}
+		// Show comment on the stream — every broadcast message is already
+		// completed and screened, so this always fires (unlike the old
+		// readstate check, which referenced a field that doesn't exist on
+		// this payload and would never have been true).
+		nodecg.sendMessage('newDonation', {
+			donor_name: displayName,
+			amount: dono.amount.toString(),
+			comment: dono.comment,
+		});
 	} catch (err) {
 		nodecg.log.error('[tracker] Error processing WebSocket message:', err);
 	}
 };
-
-interface Dono {
-	id: number;
-	amount: number;
-	currency: string;
-	comment: string;
-	donor_name: string;
-	transactionstate: string;
-	readstate: string;
-	commentstate: string;
-	event?: number | string;
-}
-
-interface DonoEvt {
-	donation: Dono;
-	event_total?: number;
-	event?: number | string;
-}
 
 // Getting the initial donation total on startup.
 updateDontationTotalFromAPI();
