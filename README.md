@@ -61,8 +61,12 @@ Afterwards, refresh the browser source in OBS to reload the layout.
 
 When running in Docker you have to restart the container after rebuilding.
 
+# Configuration
+Configuration files need to be added under nodecg/cfg.
+There are example files under nodecg/cfg/examples, but as the actual config files may contain values that should not be made public, they have to be manually copied to the folder above.
+
 ## Twitch integration
-The nodecg-speedcontrol.json file inside nodecg/cfg has Twitch integration enabled, but lacks clientId and clientSecret. Obtain these from the Twitch developer console (https://dev.twitch.tv/console).
+The nodecg-speedcontrol.json file inside nodecg/cfg/example has Twitch integration enabled, but lacks clientId and clientSecret. Obtain these from the Twitch developer console (https://dev.twitch.tv/console).
 
 # OBS configuration
 Under tools > websocket server settings make sure the port is set to 4444 (same as cfg/scm-nodecg.json) and disable authorization.

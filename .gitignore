@@ -62,14 +62,21 @@ typings/
 
 # Built files and NodeCG resources
 nodecg/*
-nodecg.zip
 !nodecg/package.json
 !nodecg/package-lock.json
 !nodecg/assets/scm-nodecg/sponsor-logos/.empty_directory
 !nodecg/start.bat
 
+# Ignore the actual configs (may contain secrets), but include example files
+!nodecg/cfg
+nodecg/cfg/*
+!nodecg/cfg/examples/
+
 # SQLite Database files
 *.sqlite3
+
+# Zipped folders (e.g. for deploying nodecg)
+*.zip
 
 # Backup of files (e.g. bundles not currently in use)
 backup/*

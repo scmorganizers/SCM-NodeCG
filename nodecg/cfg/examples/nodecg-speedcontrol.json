@@ -1,0 +1,18 @@
+{
+    "language": "en",
+    "twitch": {
+        "enabled": true,
+        "clientID": "YOUR_CLIENT_ID",
+        "clientSecret": "YOUR_CLIENT_SECRET",
+        "redirectURI": "http://localhost:9090/nodecg-speedcontrol/twitchauth",
+		"streamTitle": "Souls Charity Marathon 2024 - {{game}} - {{category}} by {{players}} !donate !merch",
+		"tagPlayersInStreamTitle": true,
+		"streamDefaultGame": "Dark Souls",
+        "ffzIntegration": false
+    },
+    "oengus": {
+        "defaultMarathon": "scm2026",
+        "defaultSchedule": "main",
+        "disableSpeedrunComLookup": true
+    }
+}
