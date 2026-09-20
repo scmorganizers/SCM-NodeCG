@@ -13,6 +13,7 @@
     "build": "run-s build:*",
     "build:browser": "vite build && node scripts/post-build.js",
     "build:extension": "esbuild src/extension/index.ts --bundle --platform=node --target=node22 --outfile=nodecg/extension/index.js --external:nodecg",
+    "build:node": "node scripts/copy-node.js",
     "clean": "trash node_modules/.cache && trash nodecg/dashboard && trash nodecg/graphics && trash nodecg/extension && trash nodecg/shared",
     "format": "prettier --write ./src",
     "watch": "run-p watch:*",
