@@ -1,54 +1,62 @@
 <template>
 	<div>
 		<img src="./background.png" />
+
+		<!-- Top offset by 45px -->
 		<upcoming-run
 			:run-data="nextRun"
 			:style="{
-				left: '323px',
-				top: '346px',
-				width: '774px',
-				height: '220px',
+				left: '326px',
+				top: 'calc(300px + 45px)',
+				width: '768px',
+				height: '212px',
 			}"
 		/>
+
+		<!-- Top offset by 45px -->
 		<upcoming-run
 			:run-data="onDeck"
 			:style="{
-				left: '323px',
-				top: '618px',
-				width: '774px',
-				height: '220px',
+				left: '326px',
+				top: 'calc(568px + 45px)',
+				width: '768px',
+				height: '212px',
 			}"
 		/>
+
 		<sponsor-logos
 			:style="{
-				left: '1185px',
-				top: '323px',
-				width: '318px',
-				height: '166px',
+				left: '1161px',
+				top: '300px',
+				width: '368px',
+				height: '212px',
 			}"
 		/>
+
 		<host
 			:style="{
-				left: '1160px',
-				top: '570px',
+				left: '1161px',
+				top: '568px',
 				width: '368px',
-				height: '90px',
+				height: '94px',
 			}"
 		/>
+
 		<donation-total
 			:style="{
-				left: '1160px',
-				top: '696px',
+				left: '1161px',
+				top: '686px',
 				width: '368px',
-				height: '90px',
+				height: '94px',
 			}"
 		/>
+
 		<ticker
 			:style="{
-				left: '212px',
-				top: '876px',
-				width: '1498px',
-				height: '96px',
+				left: '208px',
+				top: '873px',
+				width: '1506px',
+				height: '101px',
 			}"
 		/>
 	</div>

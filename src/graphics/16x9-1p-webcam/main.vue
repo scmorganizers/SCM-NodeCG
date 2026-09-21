@@ -4,55 +4,42 @@
 
 		<sponsor-logos
 			:style="{
-				left: '161px',
-				top: '208px',
+				left: '66px',
+				top: '116px',
 				width: '314px',
 				height: '124px',
 			}"
 		/>
 
-		<player
-			:style="{
-				left: '161px',
-				top: '370px',
-				width: '314px',
-				height: '89px',
-			}"
-			:nameOnly=true
-		/>
-
 		<timer
 			:style="{
-				left: '161px',
-				top: '478px',
+				left: '66px',
+				top: '258px',
 				width: '314px',
 				height: '89px',
 			}"
 		/>
-
 		<game
 			:style="{
-				left: '161px',
-				top: '586px',
+				left: '66px',
+				top: '362px',
 				width: '314px',
 				height: '89px',
 			}"
 			:run="runDataActiveRun"
 		/>
-
 		<host
 			:style="{
-				left: '161px',
-				top: '694px',
+				left: '66px',
+				top: '467px',
 				width: '314px',
 				height: '89px',
 			}"
 		/>
-
 		<donation-total
 			:style="{
-				left: '161px',
-				top: '802px',
+				left: '66px',
+				top: '567px',
 				width: '314px',
 				height: '89px',
 			}"
@@ -65,6 +52,17 @@
 				width: '1874px',
 				height: '84px',
 			}"
+		/>
+
+		<player
+			:style="{
+				left: '1625px',
+				top: '82px',
+				width: '270px',
+				height: '47px',
+				textAlign: 'right',
+			}"
+			:nameOnly=true
 		/>
 	</div>
 </template>
@@ -95,6 +93,9 @@
 	export default class App extends Vue {
 		@replicantNS.State((s) => s.reps.runDataActiveRun)
 		readonly runDataActiveRun!: RunDataActiveRun;
+
+		urlParams = new URLSearchParams(window.location.search);
+		player = Number(this.urlParams.get('player') || 1);
 	}
 </script>
 

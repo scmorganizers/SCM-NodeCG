@@ -4,8 +4,8 @@
 
 		<sponsor-logos
 			:style="{
-				left: '161px',
-				top: '208px',
+				left: '803px',
+				top: '810px',
 				width: '314px',
 				height: '124px',
 			}"
@@ -13,18 +13,32 @@
 
 		<player
 			:style="{
-				left: '161px',
-				top: '370px',
-				width: '314px',
-				height: '89px',
+				left: '26px',
+				top: '748px',
+				width: '270px',
+				height: '47px',
+				textAlign: 'left',
 			}"
 			:nameOnly=true
+			:team="1"
+		/>
+
+		<player
+			:style="{
+				left: '1624px',
+				top: '748px',
+				width: '270px',
+				height: '47px',
+				textAlign: 'right',
+			}"
+			:nameOnly=true
+			:team="2"
 		/>
 
 		<timer
 			:style="{
-				left: '161px',
-				top: '478px',
+				left: '33px',
+				top: '828px',
 				width: '314px',
 				height: '89px',
 			}"
@@ -32,8 +46,8 @@
 
 		<game
 			:style="{
-				left: '161px',
-				top: '586px',
+				left: '428px',
+				top: '828px',
 				width: '314px',
 				height: '89px',
 			}"
@@ -42,17 +56,17 @@
 
 		<host
 			:style="{
-				left: '161px',
-				top: '694px',
+				left: '1179px',
+				top: '828px',
 				width: '314px',
 				height: '89px',
 			}"
 		/>
-
+		
 		<donation-total
 			:style="{
-				left: '161px',
-				top: '802px',
+				left: '1579px',
+				top: '828px',
 				width: '314px',
 				height: '89px',
 			}"
@@ -95,6 +109,7 @@
 	export default class App extends Vue {
 		@replicantNS.State((s) => s.reps.runDataActiveRun)
 		readonly runDataActiveRun!: RunDataActiveRun;
+		@replicantNS.State((s) => s.reps.nameCycle) readonly nameCycle!: number;
 	}
 </script>
 

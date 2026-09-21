@@ -42,12 +42,17 @@
                 "height": 1080
             },
             {
-                "file": "3x2-1p.html",
+                "file": "10x9-2p.html",
                 "width": 1920,
                 "height": 1080
             },
             {
                 "file": "16x9-1p.html",
+                "width": 1920,
+                "height": 1080
+            },
+            {
+                "file": "16x9-1p-webcam.html",
                 "width": 1920,
                 "height": 1080
             },
@@ -58,6 +63,11 @@
             },
             {
                 "file": "16x9-2p-bingo.html",
+                "width": 1920,
+                "height": 1080
+            },
+            {
+                "file": "16x9-2p-webcam.html",
                 "width": 1920,
                 "height": 1080
             },

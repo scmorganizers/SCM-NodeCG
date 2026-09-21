@@ -2,67 +2,68 @@
 	<div>
 		<img src="./background.png" />
 
-		<!-- Based on top left corner + sizes from photoshop file -->
 		<sponsor-logos
 			:style="{
-				left: '29px',
-				top: '280px',
-				width: '320px',
-				height: '120px',
+				left: '33px',
+				top: '270px',
+				width: '314px',
+				height: '124px',
 			}"
 		/>
 
-		<!-- left + 10px, top, width - 20px, height-->
 		<timer
 			:style="{
-				left: '39px',
-				top: '422px',
-				width: '300px',
-				height: '90px',
+				left: '33px',
+				top: '413px',
+				width: '314px',
+				height: '89px',
 			}"
 		/>
+
 		<game
 			:style="{
-				left: '39px',
-				top: '522px',
-				width: '300px',
-				height: '90px',
+				left: '33px',
+				top: '515px',
+				width: '314px',
+				height: '89px',
 			}"
 			:run="runDataActiveRun"
 		/>
+
 		<player
 			:style="{
-				left: '39px',
-				top: '622px',
-				width: '300px',
-				height: '90px',
+				left: '33px',
+				top: '619px',
+				width: '314px',
+				height: '89px',
 			}"
-			:team="player"
+			:nameOnly=true
 		/>
+
 		<host
 			:style="{
-				left: '39px',
-				top: '722px',
-				width: '300px',
-				height: '90px',
-			}"
-		/>
-		<donation-total
-			:style="{
-				left: '39px',
-				top: '822px',
-				width: '300px',
-				height: '90px',
+				left: '33px',
+				top: '719px',
+				width: '314px',
+				height: '89px',
 			}"
 		/>
 		
-		<!-- Same as 2023 -->
+		<donation-total
+			:style="{
+				left: '33px',
+				top: '821px',
+				width: '314px',
+				height: '89px',
+			}"
+		/>
+
 		<ticker
 			:style="{
-				left: '29px',
-				top: '980px',
+				left: '26px',
+				top: '960px',
 				width: '1874px',
-				height: '82px',
+				height: '84px',
 			}"
 		/>
 	</div>

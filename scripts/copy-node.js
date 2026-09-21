@@ -17,7 +17,7 @@ if (!fs.existsSync(outDir)) {
 
 if (!fs.existsSync(destPath)) {
   fs.copyFileSync(process.execPath, destPath);
-  console.log('node.exe copied to output folder.');
+  console.log('node.exe copied to output folder');
 } else {
-  console.log('node.exe already exists in output folder.');
+  console.log('node.exe already exists in output folder');
 }

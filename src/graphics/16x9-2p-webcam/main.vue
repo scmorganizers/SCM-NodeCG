@@ -4,55 +4,42 @@
 
 		<sponsor-logos
 			:style="{
-				left: '161px',
-				top: '208px',
+				left: '803px',
+				top: '752px',
 				width: '314px',
 				height: '124px',
 			}"
 		/>
 
-		<player
-			:style="{
-				left: '161px',
-				top: '370px',
-				width: '314px',
-				height: '89px',
-			}"
-			:nameOnly=true
-		/>
-
 		<timer
 			:style="{
-				left: '161px',
-				top: '478px',
+				left: '422px',
+				top: '693px',
 				width: '314px',
 				height: '89px',
 			}"
 		/>
-
 		<game
 			:style="{
-				left: '161px',
-				top: '586px',
+				left: '422px',
+				top: '836px',
 				width: '314px',
 				height: '89px',
 			}"
 			:run="runDataActiveRun"
 		/>
-
 		<host
 			:style="{
-				left: '161px',
-				top: '694px',
+				left: '1184px',
+				top: '693px',
 				width: '314px',
 				height: '89px',
 			}"
 		/>
-
 		<donation-total
 			:style="{
-				left: '161px',
-				top: '802px',
+				left: '1184px',
+				top: '836px',
 				width: '314px',
 				height: '89px',
 			}"
@@ -65,6 +52,27 @@
 				width: '1874px',
 				height: '84px',
 			}"
+		/>
+
+		<player
+			:style="{
+				left: '20px',
+				top: '87px',
+				width: '270px',
+				height: '47px',
+				textAlign: 'left',
+			}"
+			:nameOnly=true
+		/>
+		<player
+			:style="{
+				left: '1630px',
+				top: '87px',
+				width: '270px',
+				height: '47px',
+				textAlign: 'right',
+			}"
+			:nameOnly=true
 		/>
 	</div>
 </template>
@@ -95,6 +103,7 @@
 	export default class App extends Vue {
 		@replicantNS.State((s) => s.reps.runDataActiveRun)
 		readonly runDataActiveRun!: RunDataActiveRun;
+		@replicantNS.State((s) => s.reps.nameCycle) readonly nameCycle!: number;
 	}
 </script>
 

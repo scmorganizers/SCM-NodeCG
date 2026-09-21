@@ -2,91 +2,87 @@
 	<div>
 		<img src="./background.png" />
 		
-		<!-- Based on top left corner + sizes from photoshop file -->
 		<sponsor-logos
 			:style="{
-				left: '151px',
-				top: '775px',
-				width: '320px',
-				height: '120px',
+				left: '105px',
+				top: '569px',
+				width: '314px',
+				height: '124px',
 			}"
 		/>
 
-		<!-- left + 10px, top + 10px, width - 20px, height-->
-		<player
-			:style="{
-				left: '138px',
-				top: '450px',
-				width: '300px',
-				height: '50px',
-			}"
-			:nameOnly=true
-			:team="1"
-		/>
-		<player
-			:style="{
-				left: '1482px',
-				top: '450px',
-				width: '300px',
-				height: '50px',
-			}"
-			:nameOnly=true
-			:team="2"
-		/>
-		<player
-			:style="{
-				left: '1050px',
-				top: '492px',
-				width: '300px',
-				height: '50px',
-			}"
-			:nameOnly=true
-			:team="3"
-		/>
-
-		<!-- left + 10px, top, width - 20px, height-->
 		<timer
 			:style="{
-				left: '570px',
-				top: '540px',
-				width: '300px',
-				height: '90px',
+				left: '105px',
+				top: '728px',
+				width: '314px',
+				height: '89px',
 			}"
 		/>
 		<game
 			:style="{
-				left: '570px',
-				top: '640px',
-				width: '300px',
-				height: '90px',
+				left: '105px',
+				top: '852px',
+				width: '314px',
+				height: '89px',
 			}"
 			:run="runDataActiveRun"
 		/>
 		<host
 			:style="{
-				left: '570px',
-				top: '740px',
-				width: '300px',
-				height: '90px',
+				left: '508px',
+				top: '852px',
+				width: '314px',
+				height: '89px',
 			}"
 		/>
 		<donation-total
 			:style="{
-				left: '570px',
-				top: '840px',
-				width: '300px',
-				height: '90px',
+				left: '508px',
+				top: '728px',
+				width: '314px',
+				height: '89px',
 			}"
 		/>
 
-		<!-- Same as 2023 -->
 		<ticker
 			:style="{
-				left: '24px',
-				top: '979px',
-				width: '1874px',
-				height: '82px',
+				left: '25px',
+				top: '989px',
+				width: '1689px',
+				height: '68px',
 			}"
+		/>
+
+		<player
+			:style="{
+				left: '102px',
+				top: '459px',
+				width: '270px',
+				height: '47px',
+				textAlign: 'left',
+			}"
+			:nameOnly=true
+		/>
+		<player
+			:style="{
+				left: '1062px',
+				top: '459px',
+				width: '270px',
+				height: '47px',
+				textAlign: 'left',
+			}"
+			:nameOnly=true
+		/>
+		<player
+			:style="{
+				left: '1549px',
+				top: '487px',
+				width: '270px',
+				height: '47px',
+				textAlign: 'right',
+			}"
+			:nameOnly=true
 		/>
 	</div>
 </template>
