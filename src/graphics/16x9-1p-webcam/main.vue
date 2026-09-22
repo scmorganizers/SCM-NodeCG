@@ -59,10 +59,10 @@
 				left: '1625px',
 				top: '82px',
 				width: '270px',
-				height: '47px',
-				textAlign: 'right',
+				height: '47px'
 			}"
 			:nameOnly=true
+			:align="'right'"
 		/>
 	</div>
 </template>

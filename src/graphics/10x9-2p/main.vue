@@ -17,10 +17,10 @@
 				top: '748px',
 				width: '270px',
 				height: '47px',
-				textAlign: 'left',
 			}"
 			:nameOnly=true
 			:team="1"
+			:align="'left'"
 		/>
 
 		<player
@@ -29,10 +29,10 @@
 				top: '748px',
 				width: '270px',
 				height: '47px',
-				textAlign: 'right',
 			}"
 			:nameOnly=true
 			:team="2"
+			:align="'right'"
 		/>
 
 		<timer

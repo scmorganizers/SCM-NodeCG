@@ -12,13 +12,12 @@
 			}"
 		/>
 
-		<!-- left + 10px, top + 10px, width - 20px, height-->
 		<!-- Assuming player 1 & 2 are on the left side, and 3 & 4 are on the right side. Change if needed.-->
 		<player
 			:style="{
-				left: '28px',
-				top: '440px',
-				width: '300px',
+				left: '18px',
+				top: '430px',
+				width: '320px',
 				height: '50px',
 			}"
 			:nameOnly=true
@@ -26,9 +25,9 @@
 		/>
 		<player
 			:style="{
-				left: '462px',
-				top: '492px',
-				width: '300px',
+				left: '452px',
+				top: '482px',
+				width: '320px',
 				height: '50px',
 			}"
 			:nameOnly=true
@@ -36,9 +35,9 @@
 		/>
 		<player
 			:style="{
-				left: '1592px',
-				top: '440px',
-				width: '300px',
+				left: '1582px',
+				top: '430px',
+				width: '320px',
 				height: '50px',
 			}"
 			:nameOnly=true
@@ -46,9 +45,9 @@
 		/>
 		<player
 			:style="{
-				left: '1158px',
-				top: '492px',
-				width: '300px',
+				left: '1148px',
+				top: '482px',
+				width: '320px',
 				height: '50px',
 			}"
 			:nameOnly=true

@@ -19,6 +19,7 @@
 				height: '89px',
 			}"
 		/>
+
 		<game
 			:style="{
 				left: '804px',
@@ -28,6 +29,7 @@
 			}"
 			:run="runDataActiveRun"
 		/>
+
 		<host
 			:style="{
 				left: '804px',
@@ -36,6 +38,7 @@
 				height: '89px',
 			}"
 		/>
+
 		<donation-total
 			:style="{
 				left: '804px',
@@ -59,40 +62,44 @@
 				left: '31px',
 				top: '447px',
 				width: '270px',
-				height: '47px',
-				textAlign: 'left',
+				height: '47px'
 			}"
 			:nameOnly=true
+			:team="1"
+			:align="'left'"
 		/>
 		<player
 			:style="{
 				left: '1154px',
 				top: '447px',
 				width: '270px',
-				height: '47px',
-				textAlign: 'left',
+				height: '47px'
 			}"
 			:nameOnly=true
+			:team="2"
+			:align="'left'"
 		/>
 		<player
 			:style="{
 				left: '1621px',
 				top: '491px',
 				width: '270px',
-				height: '47px',
-				textAlign: 'right',
+				height: '47px'
 			}"
 			:nameOnly=true
+			:team="3"
+			:align="'right'"
 		/>
 		<player
 			:style="{
 				left: '497px',
 				top: '491px',
 				width: '270px',
-				height: '47px',
-				textAlign: 'right',
+				height: '47px'
 			}"
 			:nameOnly=true
+			:team="4"
+			:align="'right'"
 		/>
 	</div>
 </template>

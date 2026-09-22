@@ -77,6 +77,7 @@ nodecg/cfg/*
 
 # Zipped folders (e.g. for deploying nodecg)
 *.zip
+*.7z
 
 # Backup of files (e.g. bundles not currently in use)
 backup/*

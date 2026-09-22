@@ -11,29 +11,6 @@
 			}"
 		/>
 
-		<player
-			:style="{
-				left: '7px',
-				top: '705px',
-				width: '270px',
-				height: '47px',
-				textAlign: 'left',
-			}"
-			:nameOnly=true
-			:team="1"
-		/>
-		<player
-			:style="{
-				left: '1644px',
-				top: '705px',
-				width: '270px',
-				height: '47px',
-				textAlign: 'right',
-			}"
-			:nameOnly=true
-			:team="2"
-		/>
-
 		<timer
 			:style="{
 				left: '33px',
@@ -51,6 +28,7 @@
 			}"
 			:run="runDataActiveRun"
 		/>
+
 		<host
 			:style="{
 				left: '1188px',
@@ -59,6 +37,7 @@
 				height: '89px',
 			}"
 		/>
+
 		<donation-total
 			:style="{
 				left: '1579px',
@@ -75,6 +54,29 @@
 				width: '1874px',
 				height: '84px',
 			}"
+		/>
+
+		<player
+			:style="{
+				left: '7px',
+				top: '705px',
+				width: '270px',
+				height: '47px'
+			}"
+			:nameOnly=true
+			:team="1"
+			:align="'left'"
+		/>
+		<player
+			:style="{
+				left: '1644px',
+				top: '705px',
+				width: '270px',
+				height: '47px'
+			}"
+			:nameOnly=true
+			:team="2"
+			:align="'right'"
 		/>
 	</div>
 </template>

@@ -1,5 +1,6 @@
 <template>
-	<div :style="{ position: 'fixed' }">
+	<!-- 95% scale to ensure text does not touch the edges -->
+	<div :style="{ position: 'fixed', transform: 'scale(0.95)' }">
 		<transition name="fade">
 			<div
 				v-if="run"

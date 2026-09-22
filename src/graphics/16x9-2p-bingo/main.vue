@@ -12,23 +12,22 @@
 			}"
 		/>
 
-		<!-- left + 10px, top + 10px, width - 20px, height-->
 		<player
 			:style="{
-				left: '138px',
-				top: '450px',
-				width: '300px',
-				height: '50px',
+				left: '128px',
+				top: '440px',
+				width: '320px',
+				height: '50px'
 			}"
 			:nameOnly=true
 			:team="1"
 		/>
 		<player
 			:style="{
-				left: '1482px',
-				top: '450px',
-				width: '300px',
-				height: '50px',
+				left: '1472px',
+				top: '440px',
+				width: '320px',
+				height: '50px'
 			}"
 			:nameOnly=true
 			:team="2"

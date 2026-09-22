@@ -1,4 +1,3 @@
-import { Configschema } from '@src/types/schemas';
 import obsWebsocketJs from 'obs-websocket-js';
 import { getNodeCG } from './nodecg';
 import { currentOBSScene } from './replicants';
