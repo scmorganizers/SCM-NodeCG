@@ -78,13 +78,13 @@
 
 			scmPromo() {
 				return this.genericMsg(
-					'Welcome to&nbsp;<b style="color: #33ccff">Souls Charity Marathon 2024</b>'
+					'Welcome to&nbsp;<b style="color: #33ccff">Souls Charity Marathon 2026</b>'
 				);
 			},
 
 			schedulePromo() {
 				return this.genericMsg(
-					'<b>You can find the schedule over at&nbsp;</b>&nbsp;<b style="color: #33ccff">oengus.io/marathon/scm2024</b>'
+					'<b>You can find the schedule over at&nbsp;</b>&nbsp;<b style="color: #33ccff">oengus.io/marathon/scm2026</b>'
 				);
 			},
 
