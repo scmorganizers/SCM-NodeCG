@@ -16,6 +16,7 @@ nodecg.listenFor('nextRun', (data, ack) => {
 	console.log('next run')
 	obs.changeToIntermission().catch((err) => {console.log(err);});
 	setTimeout(() => speedcontrol.sendMessage('changeToNextRun'), 500);
+	// TODO: Remove mute/unmute?
 	obs.muteAudio();
 	obs.unmuteAudio();
 
